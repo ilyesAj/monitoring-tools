@@ -13,8 +13,9 @@ grafana+promethues
 ![9b115d69f87870c67f1c8ae23e89948f.png](https://github.com/ilyesAj/monitoring-tools/blob/master/_resources/59d77dc9c3284c9cb563ff2629d331ce.png)
 
 
+# Deploying Services
 
-# Prerequisites :
+## Prerequisites :
 
 - The machine have to be connected to internet
 - Docker
@@ -22,7 +23,6 @@ grafana+promethues
 - Firewalld
 - OS : Centos 7
 
-# Deploying Services
 ## Running services
 ````sh
 git clone https://github.com/ilyesAj/monitoring-tools.git
@@ -33,7 +33,7 @@ sudo docker ps
 # monitoring services
 sudo docker logs -f [name_service]
 ````
-##  config 
+##  configuring Services 
 ### Default config 
 Prometheus will now be reachable :
 - locally on http://localhost:9020/ 
@@ -67,3 +67,24 @@ curl -v --resolve graph.local.com:80:8.8.2.8 graph.local.com/graph
 !-- if you try curl IP_Machine (without DNS Resolve) it won`t work , it will be blocked  by Nginx --!
 ````
 If your working on AWS or GCP you have to verify your INGRESS rules on firewall , you have to allow HTTP/HTTPS ports 
+# Creating Data for monitoring 
+## Implementing node-exporter
+node-exporter is Prometheus exporter for hardware and OS metrics
+
+* node-exporter is available on a docker container but not recommanded .If you're interrested in implementing it with docker , uncomment the node-exporter section 
+
+````sh
+# For centos RHEL
+sudo curl -Lo /etc/yum.repos.d/_copr_ibotty-prometheus-exporters.repo https://copr.fedorainfracloud.org/coprs/ibotty/prometheus-exporters/repo/epel-7/ibotty-prometheus-exporters-epel-7.repo
+sudo yum install node_exporter -y
+sudo systemctl enable --now node_exporter
+# for other Linux systems refer to : https://devopscube.com/monitor-linux-servers-prometheus-node-exporter/
+````
+If node-exporter is installed correctly you will see metrics using Curl command `curl localhost:9100/metrics`
+## Attaching node-exporter to Prometheus
+# references 
+- https://medium.com/htc-research-engineering-blog/build-a-monitoring-dashboard-by-prometheus-grafana-741a7d949ec2
+- https://journaldunadminlinux.fr/tutoriel-decouverte-de-prometheus-et-grafana/
+- https://prometheus.io/docs/visualization/grafana/
+- https://hub.docker.com/r/prom/prometheus
+- https://kjanshair.github.io/2018/02/20/prometheus-monitoring/
