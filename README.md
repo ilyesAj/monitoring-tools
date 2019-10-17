@@ -5,7 +5,7 @@ grafana+promethues
 # Presentation :
 # Architecture: 
 ## General architecture 
-[image](https://img.linuxfr.org/img/68747470733a2f2f70726f6d6574686575732e696f2f6173736574732f6172636869746563747572652e737667/architecture.svg)
+![image](https://img.linuxfr.org/img/68747470733a2f2f70726f6d6574686575732e696f2f6173736574732f6172636869746563747572652e737667/architecture.svg)
 ## Specific architecture
 
 
@@ -44,7 +44,7 @@ grafana will now be reachable only remotly on graph.local.com
 try `netstat -lnpt ` to verify if our services are listening 
 normally we have 3 open ports :
 
-![5efbe42747f87a1afbfa74b319d5e5bf.png]https://github.com/ilyesAj/monitoring-tools/blob/master/_resources/7b3c13b3d7a1439297ddfa88d782715d.png)
+![5efbe42747f87a1afbfa74b319d5e5bf.png](https://github.com/ilyesAj/monitoring-tools/blob/master/_resources/7b3c13b3d7a1439297ddfa88d782715d.png)
 
 - 80/443 : For distant access managed by Nginx
 - 9020 : For accessing Prometheus locally
