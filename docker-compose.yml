@@ -1,0 +1,41 @@
+# deployment for grafana+ prometheus
+version : '2'
+
+services:
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+   # ports:
+   #   - 9020:3000
+    volumes:
+      - 'grafana-volume:/var/lib/grafana'
+    environment:
+      - "GF_SECURITY_ADMIN_PASSWORD=secret123*"
+      - "VIRTUAL_HOST=graph.local.com"
+      - "VIRTUAL_PORT=9090"
+      - "GF_SERVER_ROOT_URL=http://graph.local.com"
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: unless-stopped
+#    ports:
+#      - 0.0.0.0:80:9090
+    environment:
+      - "VIRTUAL_HOST=prom.local.com"
+      - "VIRTUAL_PORT=3000"
+  nginx:
+    image: 'jwilder/nginx-proxy'
+    volumes:
+       - '/var/run/docker.sock:/tmp/docker.sock:ro'
+ #      - '/etc/nginx/certs:/etc/nginx/certs'
+  #     - './config_proxy_spec.conf:/etc/nginx/conf.d/config_proxy_spec.conf:ro'
+    ports:
+      - '80:80'
+      - '443:443'
+    security_opt:
+      - label:type:docker_t
+    restart: unless-stopped
+    container_name: nginx
+volumes:
+  grafana-volume:
