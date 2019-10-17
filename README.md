@@ -82,6 +82,9 @@ sudo systemctl enable --now node_exporter
 ````
 If node-exporter is installed correctly you will see metrics using Curl command `curl localhost:9100/metrics`
 ## Attaching node-exporter to Prometheus
+TODO
+## Attaching Prometheus to grafana
+TODO
 # references 
 - https://medium.com/htc-research-engineering-blog/build-a-monitoring-dashboard-by-prometheus-grafana-741a7d949ec2
 - https://journaldunadminlinux.fr/tutoriel-decouverte-de-prometheus-et-grafana/
