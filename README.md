@@ -12,7 +12,7 @@ grafana+promethues
 
 ![9b115d69f87870c67f1c8ae23e89948f.png](https://github.com/ilyesAj/monitoring-tools/blob/master/_resources/59d77dc9c3284c9cb563ff2629d331ce.png)
 
-
+TODO adding node-exporter
 # Deploying Services
 
 ## Prerequisites :
@@ -115,3 +115,6 @@ refer to docker compose -> prometheus service -> volumes
 - https://kjanshair.github.io/2018/02/20/prometheus-monitoring/
 - https://prometheus.io/docs/guides/node-exporter/
 - https://github.com/stefanprodan/dockprom
+- https://javaetmoi.com/2019/03/dashboard-grafana-docker/
+- https://grafana.com/docs/http_api/dashboard/
+- https://travis-ci.org/vegasbrianc/prometheus
