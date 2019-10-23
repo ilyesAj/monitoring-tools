@@ -89,7 +89,7 @@ in docker compose uncomment node-exporter service
 
 ## Attaching node-exporter to Prometheus
 
-for inter-communication beween containers we can access from a container to another via : name_container:exposed_port 
+for inter-communication beween containers we can access from a container to another via : `name_container:exposed_port` 
 in our case we exposed node-exporter to 9100 with a name kernel-monitor and then we attached the two components together with prometheus config file : 
 ````yml
 --- 
@@ -102,7 +102,7 @@ scrape_configs:
         targets: 
           - "kernel_monitor:9100"
 ````
-we forced prometheus to work with this configuration by creating a link between /config/prometheus.yml and /etc/prometherus/prometheus.yml
+we forced prometheus to work with this configuration by creating a ` link between /config/prometheus.yml and /etc/prometherus/prometheus.yml `
 refer to docker compose -> prometheus service -> volumes 
 
 ## Attaching Prometheus to grafana
@@ -114,3 +114,4 @@ refer to docker compose -> prometheus service -> volumes
 - https://hub.docker.com/r/prom/prometheus
 - https://kjanshair.github.io/2018/02/20/prometheus-monitoring/
 - https://prometheus.io/docs/guides/node-exporter/
+- https://github.com/stefanprodan/dockprom

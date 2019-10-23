@@ -11,17 +11,23 @@ services:
 #      - 3000:3000
     volumes:
       - 'grafana-volume:/var/lib/grafana'
+      - ./config/grafana/datasources:/etc/grafana/datasources
+      - ./config/grafana/dashboards:/etc/grafana/dashboards
+#      - ./config/grafana/setup.sh:/setup.sh:z
     environment:
+      - "GF_SECURITY_ADMIN_USER=admin"
       - "GF_SECURITY_ADMIN_PASSWORD=secret123*"
+      - "GF_USERS_ALLOW_SIGN_UP=false"
       - "VIRTUAL_HOST=graph.local.com"
       - "VIRTUAL_PORT=3000"
       - "GF_SERVER_ROOT_URL=http://graph.local.com"
+#    entrypoint: /setup.sh
   prometheus:
     image: prom/prometheus
     container_name: prometheus
     restart: unless-stopped
-    ports:
-      - 0.0.0.0:9020:9090
+#    ports:
+#      - 0.0.0.0:9020:9090
     volumes:
       - ./config/prometheus/:/etc/prometheus/:z
       - prometheus_data:/prometheus
