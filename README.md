@@ -86,6 +86,7 @@ If node-exporter is installed correctly you will see metrics using Curl command 
 ## Implementing node-exporter with docker 
 in docker compose uncomment node-exporter service 
 ## Attaching node-exporter to Prometheus
+<<<<<<< HEAD
 for inter-communication beween containers we can access from a container to another via : name_container:exposed_port 
 in our case we exposed node-exporter to 9100 with a name kernel-monitor and then we attached the two components together with prometheus config file : 
 ````yml
@@ -101,6 +102,10 @@ scrape_configs:
 ````
 we forced prometheus to work with this configuration by creating a link between /config/prometheus.yml and /etc/prometherus/prometheus.yml
 refer to docker compose -> prometheus service -> volumes 
+=======
+TODO
+problem with networking hosts <=> container 
+>>>>>>> 0b7684efb5849da3e6303f3ddc6475f22ea9d78e
 ## Attaching Prometheus to grafana
 
 # references 
