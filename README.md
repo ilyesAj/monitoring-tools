@@ -68,7 +68,7 @@ curl -v --resolve graph.local.com:80:8.8.2.8 graph.local.com/graph
 ````
 If your working on AWS or GCP you have to verify your INGRESS rules on firewall , you have to allow HTTP/HTTPS ports 
 # Creating Data for monitoring 
-## Implementing node-exporter
+## Implementing node-exporter without docker 
 node-exporter is Prometheus exporter for hardware and OS metrics
 
 * node-exporter is available on a docker container but not recommanded .If you're interrested in implementing it with docker , uncomment the node-exporter section 
@@ -78,16 +78,35 @@ node-exporter is Prometheus exporter for hardware and OS metrics
 sudo curl -Lo /etc/yum.repos.d/_copr_ibotty-prometheus-exporters.repo https://copr.fedorainfracloud.org/coprs/ibotty/prometheus-exporters/repo/epel-7/ibotty-prometheus-exporters-epel-7.repo
 sudo yum install node_exporter -y
 sudo systemctl enable --now node_exporter
+# note that if you implement node-exporter without docker , you will face a problem with networking container => host 
+# Possible solution (not tested )  :https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach  
 # for other Linux systems refer to : https://devopscube.com/monitor-linux-servers-prometheus-node-exporter/
 ````
 If node-exporter is installed correctly you will see metrics using Curl command `curl localhost:9100/metrics`
+## Implementing node-exporter with docker 
+in docker compose uncomment node-exporter service 
 ## Attaching node-exporter to Prometheus
-TODO
+for inter-communication beween containers we can access from a container to another via : name_container:exposed_port 
+in our case we exposed node-exporter to 9100 with a name kernel-monitor and then we attached the two components together with prometheus config file : 
+````yml
+--- 
+scrape_configs: 
+  - 
+    job_name: node_exporter_metrics
+    scrape_interval: 5s
+    static_configs: 
+      - 
+        targets: 
+          - "kernel_monitor:9100"
+````
+we forced prometheus to work with this configuration by creating a link between /config/prometheus.yml and /etc/prometherus/prometheus.yml
+refer to docker compose -> prometheus service -> volumes 
 ## Attaching Prometheus to grafana
-TODO
+
 # references 
 - https://medium.com/htc-research-engineering-blog/build-a-monitoring-dashboard-by-prometheus-grafana-741a7d949ec2
 - https://journaldunadminlinux.fr/tutoriel-decouverte-de-prometheus-et-grafana/
 - https://prometheus.io/docs/visualization/grafana/
 - https://hub.docker.com/r/prom/prometheus
 - https://kjanshair.github.io/2018/02/20/prometheus-monitoring/
+- https://prometheus.io/docs/guides/node-exporter/
