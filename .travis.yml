@@ -1,0 +1,18 @@
+sudo: required
+
+
+services:
+    - docker
+
+language: bash
+
+before_script:
+    - docker-compose pull
+    - docker-compose up -d
+    - docker ps
+
+
+script:
+    - ls
+    - pwd
+    - echo "hello world"
