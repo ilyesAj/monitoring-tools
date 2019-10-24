@@ -1,3 +1,4 @@
+
 # deployment for grafana+ prometheus
 # docker-compose up --force-recreate --build -d && docker logs -f prometheus
 version : '2'
@@ -13,7 +14,7 @@ services:
       - 'grafana-volume:/var/lib/grafana'
       - ./config/grafana/datasources:/etc/grafana/datasources
       - ./config/grafana/dashboards:/etc/grafana/dashboards
-#      - ./config/grafana/setup.sh:/setup.sh:z
+      - ./config/grafana/plugins:/var/lib/grafana/plugins:z
     environment:
       - "GF_SECURITY_ADMIN_USER=admin"
       - "GF_SECURITY_ADMIN_PASSWORD=secret123*"
@@ -21,7 +22,7 @@ services:
       - "VIRTUAL_HOST=graph.local.com"
       - "VIRTUAL_PORT=3000"
       - "GF_SERVER_ROOT_URL=http://graph.local.com"
-#    entrypoint: /setup.sh
+#      - "GF_INSTALL_PLUGINS=http://plugin-domain.com/my-custom-plugin.zip;custom-plugin"
   prometheus:
     image: prom/prometheus
     container_name: prometheus

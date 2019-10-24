@@ -147,10 +147,21 @@ in our repo we have provided 4 dashboards for monitoring containers , hosts ,ngi
 {"id":1,"slug":"docker-containers","status":"success","uid":"JvtvIk0Wz","url":"/d/JvtvIk0Wz/docker-containers","version":1}
 ````
 ## Adding plugins
+### local plugins
+For plugins it's a little bit diffrent , you have to extract the plugin zip file in config/grafana/plugins
+make sur that when you unzip the archive you have the correct name of the plugin and plugin.json file in the folder (when you download a plugin from official repo you will only need dist folder )
+to check if the plugin is installed :
 ````sh
-# Request
+sudo docker exec -ti grafana ash
+grafana-cli plugins ls
 # Expected Result
+installed plugins:
+ grafana-azure-monitor-datasource @ 0.3.0 
+ grafana-clock-panel @ 1.0.3 
 ````
+### distant plugins
+for offcial plugins you have just to add it in the docker compose file as an environment variable `GF_INSTALL_PLUGINS=my plugin`
+for unofficial plugins you have to insert also the url of the plugin `GF_INSTALL_PLUGINS=http://plugin-domain.com/my-custom-plugin.zip;custom-plugin`
 ## Roll it up all in a script
 we can group all API Requests in a script.his main job is to scan dashboards and datasources folders to find JSON files . It will generate the request and checks if it was accepted or not .
 you can try the script by running :
@@ -159,6 +170,8 @@ cd config/grafana
 # make sur to modify global variable in the script like password , user and grafana URL
 ./setupLinux.sh
 ```` 
+# deply on K8s
+https://github.com/PharosProduction/tutorial-grafana-prometheus-k8s
 # references 
 - https://medium.com/htc-research-engineering-blog/build-a-monitoring-dashboard-by-prometheus-grafana-741a7d949ec2
 - https://journaldunadminlinux.fr/tutoriel-decouverte-de-prometheus-et-grafana/
@@ -170,3 +183,4 @@ cd config/grafana
 - https://javaetmoi.com/2019/03/dashboard-grafana-docker/
 - https://grafana.com/docs/http_api/dashboard/
 - https://travis-ci.org/vegasbrianc/prometheus
+- https://grafana.com/docs/installation/docker/#installing-plugins-for-grafana
