@@ -3,6 +3,10 @@ sudo: required
 
 services:
     - docker
+addons:
+  hosts:
+    - graph.local.com
+    - prom.local.com
 
 language: bash
 
