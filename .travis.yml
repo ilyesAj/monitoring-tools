@@ -13,6 +13,8 @@ before_script:
 
 
 script:
+    - cd config/grafana/
+    - ./setupLinux.sh
+    - cd
     - ls
-    - pwd
-    - echo "hello world"
+    - echo "yes !"
