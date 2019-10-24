@@ -87,6 +87,11 @@ If node-exporter is installed correctly you will see metrics using Curl command 
 
 ## Implementing node-exporter with docker 
 in docker compose uncomment node-exporter service 
+## adding nginx node
+TODO problem communicating between nginx container and nginx node exporter 
+refer to iner and nginx node exporter 
+refer to https://github.com/nginxinc/nginx-prometheus-exporter/issues/30
+https://github.com/nginxinc/nginx-prometheus-exporter
 
 ## Attaching node-exporter to Prometheus
 

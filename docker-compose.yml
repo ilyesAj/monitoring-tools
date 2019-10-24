@@ -61,15 +61,27 @@ services:
     image: 'jwilder/nginx-proxy'
     volumes:
        - '/var/run/docker.sock:/tmp/docker.sock:ro'
+       - './config/nginx/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro'
  #      - '/etc/nginx/certs:/etc/nginx/certs'
   #     - './config_proxy_spec.conf:/etc/nginx/conf.d/config_proxy_spec.conf:ro'
     ports:
       - '80:80'
       - '443:443'
+      - '8888:8888'
     security_opt:
       - label:type:docker_t
     restart: unless-stopped
     container_name: nginx
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:0.4.2
+#    volumes:
+  #     - './config_proxy_spec.conf:/etc/nginx/conf.d/config_proxy_spec.conf:ro'
+    ports:
+      - '9113:9113'
+    environment:
+      - SCRAPE_URI=http://nginx:8888/nginx_status
+    restart: unless-stopped
+    container_name: nginx-exporter
 volumes:
   grafana-volume:
   prometheus_data:
