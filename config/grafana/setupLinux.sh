@@ -4,10 +4,15 @@
 
 # Script to configure grafana datasources and dashboards.
 
+if [[ ! -f "../../.env" ]];then
+ echo "error ! .env not found ! no database detected "
+ exit 1
+fi
 
+source ../../.env
 
-GRAFANA_USER=admin
-GRAFANA_PASS=secret123*
+GRAFANA_USER=$GF_SECURITY_ADMIN_USER
+GRAFANA_PASS=$GF_SECURITY_ADMIN_PASSWORD
 GRAFANA_URL=${GRAFANA_URL:-http://$GRAFANA_USER:$GRAFANA_PASS@graph.local.com}
 #GRAFANA_URL=http://grafana-plain.k8s.playground1.aws.ad.zopa.com
 DATASOURCES_PATH=./datasources

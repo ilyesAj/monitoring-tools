@@ -5,7 +5,7 @@ version : '2'
 
 services:
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:6.4.2
     container_name: grafana
     restart: unless-stopped
 #    ports:
@@ -16,15 +16,17 @@ services:
       - ./config/grafana/dashboards:/etc/grafana/dashboards
       - ./config/grafana/plugins:/var/lib/grafana/plugins:z
     environment:
-      - "GF_SECURITY_ADMIN_USER=admin"
-      - "GF_SECURITY_ADMIN_PASSWORD=secret123*"
+#      - "GF_SECURITY_ADMIN_USER=admin"
+#      - "GF_SECURITY_ADMIN_PASSWORD=secret123*"
+      - GF_SECURITY_ADMIN_USER
+      - GF_SECURITY_ADMIN_PASSWORD
       - "GF_USERS_ALLOW_SIGN_UP=false"
       - "VIRTUAL_HOST=graph.local.com"
       - "VIRTUAL_PORT=3000"
       - "GF_SERVER_ROOT_URL=http://graph.local.com"
 #      - "GF_INSTALL_PLUGINS=http://plugin-domain.com/my-custom-plugin.zip;custom-plugin"
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v2.13.1
     container_name: prometheus
     restart: unless-stopped
 #    ports:
@@ -41,7 +43,7 @@ services:
 # limit ressources monitored by node-exporter to what necessary (limit access to vital ressources)
 # refer to  node-exporter:https://github.com/prometheus/node_exporter#using-docker
   node-exporter:
-    image: prom/node-exporter
+    image: prom/node-exporter:v0.18.1
     container_name: kernel_monitor
     volumes:
       - /proc:/host/proc:ro
