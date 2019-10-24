@@ -19,6 +19,7 @@ before_script:
 script:
     - cd config/grafana/
     - ./setupLinux.sh
-    - cd
-    - ls
+    - cd ../..
+    - pwd
     - echo "yes !"
+    - curl prom.local.com/metrics

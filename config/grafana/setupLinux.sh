@@ -12,7 +12,7 @@ GRAFANA_URL=${GRAFANA_URL:-http://$GRAFANA_USER:$GRAFANA_PASS@graph.local.com}
 #GRAFANA_URL=http://grafana-plain.k8s.playground1.aws.ad.zopa.com
 DATASOURCES_PATH=./datasources
 DASHBOARDS_PATH=./dashboards
-
+API_ATTEMPTS=1
 # Generic function to call the Vault API
 grafana_api() {
   local verb=$1
@@ -31,10 +31,17 @@ grafana_api() {
 }
 
 wait_for_api() {
-  while ! grafana_api GET /api/user/preferences
+  while ! grafana_api GET /api/user/preferences && [[ API_ATTEMPTS -gt 0 ]]
   do
+    ((API_ATTEMPTS--))
     sleep 5
-  done 
+  done
+  if [[ API_ATTEMPTS -le 0 ]]; then
+     echo " API NOT RESPONDING " 
+     return 1
+  else
+     return 0
+  fi 
 }
 
 install_datasources() {
@@ -76,7 +83,9 @@ install_dashboards() {
 }
 
 configure_grafana() {
-  wait_for_api
+if ! wait_for_api; then
+  return 1
+fi
 echo ""
 echo "################## Installing datasources ###############"
   install_datasources

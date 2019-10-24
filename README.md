@@ -1,5 +1,5 @@
-# monitoring-tools
 [![Build Status](https://travis-ci.org/ilyesAj/monitoring-tools.svg?branch=master)](https://travis-ci.org/ilyesAj/monitoring-tools)
+# monitoring-tools
 A Monitoring Dashboard by Prometheus + Grafana with docker
 grafana+promethues
 
