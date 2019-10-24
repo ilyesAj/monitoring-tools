@@ -105,8 +105,60 @@ scrape_configs:
 we forced prometheus to work with this configuration by creating a ` link between /config/prometheus.yml and /etc/prometherus/prometheus.yml `
 refer to docker compose -> prometheus service -> volumes 
 
-## Attaching Prometheus to grafana
-
+# Provesioning Grafana
+we can provision grafana with either :
+- API Request
+- rebuilding the image with provisioning scripts -> refer to : https://56k.cloud/blog/provisioning-grafana-datasources-and-dashboards-automagically/
+- Via tools ( Puppet,Ansible,Chef ...)
+Official site can provide more informations the three methods -> https://grafana.com/docs/administration/provisioning/
+In this part we choose to focus on API Requests 
+Before we begin we have to test the API :
+````sh
+# Request
+curl -L -s --fail -H "Accept: application/json" -H "Content-Type: application/json" -X GET -k http://GRAFANA_USER:GRAFANA_PASS@GRAFANA_URL/api/user/preferences
+# Expected Result
+{"theme":"","homeDashboardId":0,"timezone":""}
+````
+## Adding Datasources
+Grafana all his component as a JSON files .to define a Datasource for example we can write a JSON File like this :
+````json
+{
+    "name":"Prometheus",
+    "type":"prometheus",
+    "url":"http://prometheus:9090",
+    "access":"proxy",
+    "basicAuth":false
+  }
+````
+Now we can inject it into Grafana via the API :
+````sh
+# Request
+curl -L -s --fail -H "Accept: application/json" -H "Content-Type: application/json" -X POST -k  curl -L -s --fail -H "Accept: application/json" -H "Content-Type: applica$
+# Expected Result
+{"datasource":{"id":1,"orgId":1,"name":"Prometheus","type":"prometheus","typeLogoUrl":"","access":"proxy","url":"http://prometheus:9090","password":"","user":"","databas$
+````
+## Adding dashboards
+dashboards can be downloaded directly from grafana https://grafana.com/grafana/dashboards
+in our repo we have provided 4 dashboards for monitoring containers , hosts ,nginx server and services
+````sh
+# Request
+ curl -L -s --fail -H "Accept: application/json" -H "Content-Type: application/json" -X POST -k  http://GRAFANA_USER:GRAFANA_PASS@GRAFANA_URL/api/dashboards/db --data @./dashboards/docker_containers.json
+# Expected Result
+{"id":1,"slug":"docker-containers","status":"success","uid":"JvtvIk0Wz","url":"/d/JvtvIk0Wz/docker-containers","version":1}
+````
+## Adding plugins
+````sh
+# Request
+# Expected Result
+````
+## Roll it up all in a script
+we can group all API Requests in a script.his main job is to scan dashboards and datasources folders to find JSON files . It will generate the request and checks if it was accepted or not .
+you can try the script by running :
+````sh
+cd config/grafana
+# make sur to modify global variable in the script like password , user and grafana URL
+./setupLinux.sh
+```` 
 # references 
 - https://medium.com/htc-research-engineering-blog/build-a-monitoring-dashboard-by-prometheus-grafana-741a7d949ec2
 - https://journaldunadminlinux.fr/tutoriel-decouverte-de-prometheus-et-grafana/

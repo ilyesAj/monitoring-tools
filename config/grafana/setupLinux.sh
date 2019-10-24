@@ -45,8 +45,10 @@ install_datasources() {
     if [[ -f "${datasource}" ]]; then
       echo "Installing datasource ${datasource}"
       if grafana_api POST /api/datasources "" "${datasource}"; then
-        echo "********************installed ok*********************"
+        echo ""
+	echo "********************installed ok*********************"
       else
+        echo ""
         echo "********************install failed******************"
       fi
     fi
@@ -62,8 +64,10 @@ install_dashboards() {
       echo "Installing dashboard ${dashboard}"
 
       if grafana_api POST /api/dashboards/db "" "${dashboard}"; then
+        echo ""
         echo "*************installed ok*******************"
       else
+        echo ""
         echo "*************install failed*****************"
       fi
 
@@ -73,8 +77,10 @@ install_dashboards() {
 
 configure_grafana() {
   wait_for_api
+echo ""
 echo "################## Installing datasources ###############"
   install_datasources
+echo ""
 echo "################## Installing dashboards ###############"
   install_dashboards
 }
